@@ -1,6 +1,10 @@
 import { Outlet, useMatches } from "@tanstack/react-router";
 import React, { FC, useMemo } from "react";
 
+/**
+ * Better wasy of implementing breacrumbs can be found here:
+ * https://react-location.tanstack.com/guides/breadcrumbs
+ */
 export const Breadcrumbs: FC = () => {
   const matches = useMatches();
 

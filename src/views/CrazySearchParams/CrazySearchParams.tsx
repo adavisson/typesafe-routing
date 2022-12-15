@@ -10,7 +10,7 @@ export const CrazySearchParams: FC = () => {
   const [types, setTypes] = useState<Array<string>>(search.types ?? []);
   const [weirdNestedFilter, setWeirdNestedFilter] = useState<
     typeof search.weirdNestedFilter
-  >(search.weirdNestedFilter ?? {});
+  >(search.weirdNestedFilter ?? undefined);
 
   const handleTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -123,7 +123,13 @@ export const CrazySearchParams: FC = () => {
         <label htmlFor="shiny">Shiny</label>
       </div>
       <div>
-        <button onClick={handleClick}>Fill Weird Filter With Stuff</button>
+        {!weirdNestedFilter ? (
+          <button onClick={handleClick}>Fill Weird Filter With Stuff</button>
+        ) : (
+          <button onClick={() => setWeirdNestedFilter(undefined)}>
+            Clear Filter
+          </button>
+        )}
       </div>
       <p>
         <strong>Assignee: </strong>

@@ -20,6 +20,11 @@ export const Orders = () => {
             Order 2
           </Link>
         </li>
+        <li>
+          <Link to="/orders/$orderId" params={{ orderId: 3 }}>
+            Order 3
+          </Link>
+        </li>
       </ul>
     </>
   );
