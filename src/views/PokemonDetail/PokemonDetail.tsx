@@ -34,14 +34,14 @@ export const PokemonDetail: FC = () => {
         <img src={pokemon.sprites.back_default} alt={`${pokemon.name}-back`} />
       )}
       <p>
-        <em>Abilities: </em>
+        <strong>Abilities: </strong>
         {pokemon.abilities.map(
           (ability: { ability: { name: string } }, index: number) =>
             index !== 0 ? ", " + ability.ability.name : ability.ability.name
         )}
       </p>
       <p>
-        <em>Types: </em>
+        <strong>Types: </strong>
         {pokemon.types.map((type: { type: { name: string } }, index: number) =>
           index !== 0 ? ", " + type.type.name : type.type.name
         )}

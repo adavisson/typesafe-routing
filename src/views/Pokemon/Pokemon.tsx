@@ -1,4 +1,4 @@
-import { Link, useMatch } from "@tanstack/react-router";
+import { Link, useMatch, useMatches } from "@tanstack/react-router";
 import _ from "lodash";
 import React, { FC } from "react";
 import { pokemonRoute } from "../routes";
@@ -16,6 +16,8 @@ export const Pokemon: FC = () => {
   const {
     loaderData: { pokemon },
   } = useMatch(pokemonIndexRoute.id);
+
+  const matches = useMatches();
 
   return (
     <div style={{ padding: "1rem" }}>

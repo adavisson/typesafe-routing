@@ -12,6 +12,22 @@ export const Home = () => {
       <p>
         <Link to="/pokemon">Pokemon</Link>
       </p>
+      <p>
+        <Link
+          to="/crazySearchParams"
+          search={{
+            assignee: "Bill",
+            client: "Google",
+            types: ["green", "blue"],
+            weirdNestedFilter: {
+              name: "levelOne",
+              levelOne: { name: "levelTwo", levelTwo: "???" },
+            },
+          }}
+        >
+          Crazy SearchParams
+        </Link>
+      </p>
     </div>
   );
 };
