@@ -1,4 +1,5 @@
 import { Link, useMatch } from "@tanstack/react-router";
+import _ from "lodash";
 import React, { FC } from "react";
 import { pokemonRoute } from "../routes";
 
@@ -23,7 +24,7 @@ export const Pokemon: FC = () => {
       {pokemon.map((poke: { name: string }) => (
         <li>
           <Link to="/pokemon/$pokemonName" params={{ pokemonName: poke.name }}>
-            {poke.name}
+            {_.startCase(poke.name)}
           </Link>
         </li>
       ))}
