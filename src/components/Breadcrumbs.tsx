@@ -1,11 +1,8 @@
 import { Outlet, useMatches } from "@tanstack/react-router";
-import path from "path";
 import React, { FC, useMemo } from "react";
 
 export const Breadcrumbs: FC = () => {
   const matches = useMatches();
-
-  console.log({ matches });
 
   const crumbs = useMemo(() => {
     const routesWithCrumbs = matches.filter(

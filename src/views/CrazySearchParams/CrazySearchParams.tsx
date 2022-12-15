@@ -1,10 +1,59 @@
 import { Link, useMatch } from "@tanstack/react-router";
-import React, { FC } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
 import { z } from "zod";
 import { crazySearchParamsRoute } from "../routes";
 
 export const CrazySearchParams: FC = () => {
-  const { search } = useMatch(crazySearchParamIndexRoute.id);
+  const { search, navigate } = useMatch(crazySearchParamIndexRoute.id);
+  const [assignee, setAssignee] = useState<string>(search.assignee ?? "");
+  const [client, setClient] = useState<string>(search.client ?? "");
+  const [types, setTypes] = useState<Array<string>>(search.types ?? []);
+  const [weirdNestedFilter, setWeirdNestedFilter] = useState<
+    typeof search.weirdNestedFilter
+  >(search.weirdNestedFilter ?? {});
+
+  const handleTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setTypes([...types, e.target.value]);
+    } else {
+      setTypes(types.filter((type) => type !== e.target.value));
+    }
+  };
+
+  const handleClick = () => {
+    setWeirdNestedFilter({
+      name: "levelOne",
+      levelOne: { name: "levelTwo", levelTwo: "???" },
+    });
+  };
+
+  useEffect(() => {
+    navigate({
+      search: (old) => ({ ...old, assignee }),
+      replace: true,
+    });
+  }, [assignee, navigate]);
+
+  useEffect(() => {
+    navigate({
+      search: (old) => ({ ...old, client }),
+      replace: true,
+    });
+  }, [client, navigate]);
+
+  useEffect(() => {
+    navigate({
+      search: (old) => ({ ...old, types }),
+      replace: true,
+    });
+  }, [types, navigate]);
+
+  useEffect(() => {
+    navigate({
+      search: (old) => ({ ...old, weirdNestedFilter }),
+      replace: true,
+    });
+  }, [weirdNestedFilter, navigate]);
 
   return (
     <>
@@ -12,21 +61,85 @@ export const CrazySearchParams: FC = () => {
         <h5>Back Home</h5>
       </Link>
       <h1>Objects in Search Params</h1>
+      <div>
+        <label>Assignee: </label>
+        <select
+          name="assignee"
+          value={assignee}
+          onChange={(e) => setAssignee(e.target.value)}
+        >
+          <option>Bill</option>
+          <option>Jim</option>
+          <option>Janet</option>
+          <option>Sue</option>
+        </select>
+      </div>
+      <div>
+        <label>Client: </label>
+        <select
+          name="client"
+          value={client}
+          onChange={(e) => setClient(e.target.value)}
+        >
+          <option>Renee</option>
+          <option>George</option>
+          <option>Britt</option>
+          <option>Phil</option>
+        </select>
+      </div>
+      <div>
+        <label>Types: </label>
+        <input
+          checked={types.includes("green")}
+          type="checkbox"
+          value="green"
+          name="green"
+          onChange={handleTypeChange}
+        />
+        <label htmlFor="green">Green</label>
+        <input
+          checked={types.includes("blue")}
+          type="checkbox"
+          value="blue"
+          name="blue"
+          onChange={handleTypeChange}
+        />
+        <label htmlFor="blue">Blue</label>
+        <input
+          checked={types.includes("tall")}
+          type="checkbox"
+          value="tall"
+          name="tall"
+          onChange={handleTypeChange}
+        />
+        <label htmlFor="tall">Tall</label>
+        <input
+          checked={types.includes("shiny")}
+          type="checkbox"
+          value="shiny"
+          name="shiny"
+          onChange={handleTypeChange}
+        />
+        <label htmlFor="shiny">Shiny</label>
+      </div>
+      <div>
+        <button onClick={handleClick}>Fill Weird Filter With Stuff</button>
+      </div>
       <p>
         <strong>Assignee: </strong>
-        {search.assignee}
+        {assignee}
       </p>
       <p>
         <strong>Client: </strong>
-        {search.client}
+        {client}
       </p>
       <p>
         <strong>Types: </strong>
-        {search.types?.map((type, index) => (index !== 0 ? ", " + type : type))}
+        {types.map((type, index) => (index !== 0 ? ", " + type : type))}
       </p>
       <p>
         <strong>wierdNestedFilter (stringified): </strong>
-        {JSON.stringify(search.weirdNestedFilter)}
+        {JSON.stringify(weirdNestedFilter)}
       </p>
     </>
   );
