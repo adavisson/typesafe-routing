@@ -1,27 +1,20 @@
-import { Link, useMatch, useParams } from "@tanstack/react-router";
-import React from "react";
+import { Link, useParams } from "@tanstack/react-router";
+import React, { FC } from "react";
 import { z } from "zod";
 import { ordersRoute } from "../routes";
 
-export const OrderDetail = () => {
-  const {
-    params: { orderId },
-  } = useMatch(orderDetailRoute.id);
-
-  console.log({ orderId });
+export const OrderDetail: FC = () => {
+  const { orderId } = useParams();
 
   return (
-    <>
+    <div style={{ padding: "1rem" }}>
       <div style={{ display: "flex" }}>
-        <Link to="../">
-          <h5 style={{ marginRight: "1rem" }}>Previous Page</h5>
-        </Link>
         <Link to="/orders">
           <h5>Back to Orders</h5>
         </Link>
       </div>
-      Order Detail: {}
-    </>
+      Order Detail: {orderId}
+    </div>
   );
 };
 
@@ -32,5 +25,4 @@ export const orderDetailRoute = ordersRoute.createRoute({
     orderId: z.number().int().parse(Number(orderId)),
   }),
   stringifyParams: ({ orderId }) => ({ orderId: `${orderId}` }),
-  loader: ({ params }) => params,
 });

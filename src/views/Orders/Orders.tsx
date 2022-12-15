@@ -4,7 +4,7 @@ import { ordersRoute } from "../routes";
 
 export const Orders = () => {
   return (
-    <>
+    <div style={{ padding: "1rem" }}>
       <Link to="/">
         <h5>Back Home</h5>
       </Link>
@@ -21,7 +21,7 @@ export const Orders = () => {
           </Link>
         </li>
       </ul>
-    </>
+    </div>
   );
 };
 
