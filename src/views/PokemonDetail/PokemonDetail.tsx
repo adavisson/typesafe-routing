@@ -19,7 +19,7 @@ export const PokemonDetail: FC = () => {
   } = useMatch(pokemonDetailRoute.id);
 
   return (
-    <div style={{ padding: "1rem" }}>
+    <>
       <Link to="/pokemon">
         <h5>Back to Pokemon</h5>
       </Link>
@@ -36,17 +36,24 @@ export const PokemonDetail: FC = () => {
       <p>
         <strong>Abilities: </strong>
         {pokemon.abilities.map(
-          (ability: { ability: { name: string } }, index: number) =>
-            index !== 0 ? ", " + ability.ability.name : ability.ability.name
+          (ability: { ability: { name: string } }, index: number) => (
+            <span key={ability.ability.name}>
+              {index !== 0 ? ", " + ability.ability.name : ability.ability.name}
+            </span>
+          )
         )}
       </p>
       <p>
         <strong>Types: </strong>
-        {pokemon.types.map((type: { type: { name: string } }, index: number) =>
-          index !== 0 ? ", " + type.type.name : type.type.name
+        {pokemon.types.map(
+          (type: { type: { name: string } }, index: number) => (
+            <span key={type.type.name}>
+              {index !== 0 ? ", " + type.type.name : type.type.name}
+            </span>
+          )
         )}
       </p>
-    </div>
+    </>
   );
 };
 
@@ -62,4 +69,5 @@ export const pokemonDetailRoute = pokemonRoute.createRoute({
 
     return { pokemon };
   },
+  meta: { hasCrumb: true },
 });

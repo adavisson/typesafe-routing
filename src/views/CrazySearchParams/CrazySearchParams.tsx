@@ -6,9 +6,8 @@ import { crazySearchParamsRoute } from "../routes";
 export const CrazySearchParams: FC = () => {
   const { search } = useMatch(crazySearchParamIndexRoute.id);
 
-  console.log({ search });
   return (
-    <div style={{ padding: "1rem" }}>
+    <>
       <Link to="/">
         <h5>Back Home</h5>
       </Link>
@@ -29,7 +28,7 @@ export const CrazySearchParams: FC = () => {
         <strong>wierdNestedFilter (stringified): </strong>
         {JSON.stringify(search.weirdNestedFilter)}
       </p>
-    </div>
+    </>
   );
 };
 

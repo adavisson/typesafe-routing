@@ -1,4 +1,4 @@
-import { Link, useMatch, useMatches } from "@tanstack/react-router";
+import { Link, useMatch } from "@tanstack/react-router";
 import _ from "lodash";
 import React, { FC } from "react";
 import { pokemonRoute } from "../routes";
@@ -17,20 +17,18 @@ export const Pokemon: FC = () => {
     loaderData: { pokemon },
   } = useMatch(pokemonIndexRoute.id);
 
-  const matches = useMatches();
-
   return (
-    <div style={{ padding: "1rem" }}>
+    <>
       <Link to="/">Back Home</Link>
       <h1>Pokemon</h1>
       {pokemon.map((poke: { name: string }) => (
-        <li>
+        <li key={poke.name}>
           <Link to="/pokemon/$pokemonName" params={{ pokemonName: poke.name }}>
             {_.startCase(poke.name)}
           </Link>
         </li>
       ))}
-    </div>
+    </>
   );
 };
 

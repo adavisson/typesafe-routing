@@ -7,14 +7,14 @@ export const OrderDetail: FC = () => {
   const { orderId } = useParams();
 
   return (
-    <div style={{ padding: "1rem" }}>
+    <>
       <div style={{ display: "flex" }}>
         <Link to="/orders">
           <h5>Back to Orders</h5>
         </Link>
       </div>
-      Order Detail: {orderId}
-    </div>
+      Order: {orderId}
+    </>
   );
 };
 
@@ -25,4 +25,7 @@ export const orderDetailRoute = ordersRoute.createRoute({
     orderId: z.number().int().parse(Number(orderId)),
   }),
   stringifyParams: ({ orderId }) => ({ orderId: `${orderId}` }),
+  meta: {
+    hasCrumb: true,
+  },
 });
