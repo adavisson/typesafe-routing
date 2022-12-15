@@ -1,21 +1,10 @@
-import { Link, useMatch } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import _ from "lodash";
-import React, { FC } from "react";
-import { pokemonRoute } from "../routes";
-
-const fetchPokemon = async () => {
-  const pokemonResponse = await fetch(
-    "https://pokeapi.co/api/v2/pokemon/?limit=150"
-  );
-  const pokemon = await pokemonResponse.json();
-
-  return pokemon;
-};
+import { FC } from "react";
+import { Route as PokemonRoute } from "../../routes/pokemon.index.route";
 
 export const Pokemon: FC = () => {
-  const {
-    loaderData: { pokemon },
-  } = useMatch(pokemonIndexRoute.id);
+  const { pokemon } = PokemonRoute.useLoaderData();
 
   return (
     <>
@@ -31,13 +20,3 @@ export const Pokemon: FC = () => {
     </>
   );
 };
-
-export const pokemonIndexRoute = pokemonRoute.createRoute({
-  path: "/",
-  component: Pokemon,
-  loader: async () => {
-    const pokemon = await fetchPokemon();
-
-    return { pokemon: pokemon.results };
-  },
-});

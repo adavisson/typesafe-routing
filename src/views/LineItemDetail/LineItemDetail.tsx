@@ -1,10 +1,9 @@
-import { Link, useParams } from "@tanstack/react-router";
-import React, { FC } from "react";
-import { z } from "zod";
-import { lineItemsRoute } from "../OrderDetail/OrderDetail";
+import { Link } from "@tanstack/react-router";
+import { FC } from "react";
+import { Route as LineItemDetailRoute } from "../../routes/orders/$orderId/line-items/$lineItemId/index.route";
 
 export const LineItemDetail: FC = () => {
-  const { lineItemId, orderId } = useParams();
+  const { lineItemId, orderId } = LineItemDetailRoute.useParams();
 
   return !orderId || !lineItemId ? (
     <>Failed to load</>
@@ -17,17 +16,3 @@ export const LineItemDetail: FC = () => {
     </>
   );
 };
-
-export const lineItemDetailRoute = lineItemsRoute.createRoute({
-  path: "$lineItemId",
-  parseParams: ({ lineItemId }) => ({
-    lineItemId: z.string().parse(lineItemId),
-  }),
-  stringifyParams: (params) => params,
-  meta: { hasCrumb: true },
-});
-
-export const lineItemDetailIndexRoute = lineItemDetailRoute.createRoute({
-  path: "/",
-  component: LineItemDetail,
-});

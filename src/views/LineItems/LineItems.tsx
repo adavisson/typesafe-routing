@@ -1,9 +1,8 @@
-import { Link, useParams } from "@tanstack/react-router";
-import React, { FC } from "react";
-import { lineItemsRoute } from "../OrderDetail/OrderDetail";
+import { Link } from "@tanstack/react-router";
+import { Route as LineItemsRoute } from "../../routes/orders/$orderId/line-items/index.route";
 
-export const LineItemsIndex: FC = () => {
-  const { orderId } = useParams();
+export function LineItems() {
+  const { orderId } = LineItemsRoute.useParams();
 
   return !orderId ? (
     <>Unable to find order id</>
@@ -53,9 +52,4 @@ export const LineItemsIndex: FC = () => {
       </ul>
     </>
   );
-};
-
-export const lineItemsIndexRoute = lineItemsRoute.createRoute({
-  path: "/",
-  component: LineItemsIndex,
-});
+}

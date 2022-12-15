@@ -1,22 +1,10 @@
-import { Link, useMatch } from "@tanstack/react-router";
-import React, { FC } from "react";
-import { z } from "zod";
-import { pokemonRoute } from "../routes";
+import { Link } from "@tanstack/react-router";
 import _ from "lodash";
-
-const fetchPokemon = async (name: string) => {
-  const pokemonResponse = await fetch(
-    `https://pokeapi.co/api/v2/pokemon/${name}`
-  );
-  const pokemon = await pokemonResponse.json();
-
-  return pokemon;
-};
+import { FC } from "react";
+import { Route as PokemonDetailRoute } from "../../routes/pokemon.$pokemonName.index.route";
 
 export const PokemonDetail: FC = () => {
-  const {
-    loaderData: { pokemon },
-  } = useMatch(pokemonDetailRoute.id);
+  const { pokemon } = PokemonDetailRoute.useLoaderData();
 
   return (
     <>
@@ -56,18 +44,3 @@ export const PokemonDetail: FC = () => {
     </>
   );
 };
-
-export const pokemonDetailRoute = pokemonRoute.createRoute({
-  path: "$pokemonName",
-  component: PokemonDetail,
-  parseParams: ({ pokemonName }) => ({
-    pokemonName: z.string().parse(pokemonName),
-  }),
-  stringifyParams: (params) => params,
-  loader: async ({ params: { pokemonName } }) => {
-    const pokemon = await fetchPokemon(pokemonName);
-
-    return { pokemon };
-  },
-  meta: { hasCrumb: true },
-});

@@ -1,10 +1,8 @@
-import { Link, useParams } from "@tanstack/react-router";
-import React, { FC } from "react";
-import { z } from "zod";
-import { ordersRoute } from "../routes";
+import { Link } from "@tanstack/react-router";
+import { Route as OrderDetailRoute } from "../../routes/orders/$orderId/index.route";
 
-export const OrderDetail: FC = () => {
-  const { orderId } = useParams();
+export function OrderDetail() {
+  const { orderId } = OrderDetailRoute.useParams();
 
   return !orderId ? (
     <>Cannot find Order</>
@@ -23,23 +21,4 @@ export const OrderDetail: FC = () => {
       </p>
     </>
   );
-};
-
-export const orderDetailRoute = ordersRoute.createRoute({
-  path: "$orderId",
-  parseParams: ({ orderId }) => ({
-    orderId: z.number().int().parse(Number(orderId)),
-  }),
-  stringifyParams: ({ orderId }) => ({ orderId: `${orderId}` }),
-  meta: { hasCrumb: true },
-});
-
-export const orderDetailIndexRoute = orderDetailRoute.createRoute({
-  path: "/",
-  component: OrderDetail,
-});
-
-export const lineItemsRoute = orderDetailRoute.createRoute({
-  path: "line-items",
-  meta: { hasCrumb: true },
-});
+}

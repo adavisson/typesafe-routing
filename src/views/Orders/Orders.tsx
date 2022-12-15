@@ -1,6 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import React from "react";
-import { ordersRoute } from "../routes";
 
 export const Orders = () => {
   return (
@@ -29,8 +27,3 @@ export const Orders = () => {
     </>
   );
 };
-
-export const ordersIndexRoute = ordersRoute.createRoute({
-  path: "/",
-  component: Orders,
-});

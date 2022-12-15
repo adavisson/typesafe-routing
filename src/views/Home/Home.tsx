@@ -1,8 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import React from "react";
-import { rootRoute } from "../routes";
 
-export const Home = () => {
+export function Home() {
   return (
     <>
       <h1>Typesafe Routing Demo</h1>
@@ -13,13 +11,8 @@ export const Home = () => {
         <Link to="/pokemon">Pokemon</Link>
       </p>
       <p>
-        <Link to="/crazySearchParams">Crazy SearchParams</Link>
+        <Link to="/crazy-search-params">Crazy SearchParams</Link>
       </p>
     </>
   );
-};
-
-export const indexRoute = rootRoute.createRoute({
-  path: "/",
-  component: Home,
-});
+}

@@ -1,5 +1,5 @@
 import { Outlet, useMatches } from "@tanstack/react-router";
-import React, { FC, useMemo } from "react";
+import { FC, useMemo } from "react";
 
 /**
  * Better wasy of implementing breacrumbs can be found here:
@@ -10,7 +10,7 @@ export const Breadcrumbs: FC = () => {
 
   const crumbs = useMemo(() => {
     const routesWithCrumbs = matches.filter(
-      (match) => !!match.options.meta?.hasCrumb
+      (match) => !!match.params.breadcrumb
     );
 
     return routesWithCrumbs.map((route, index) => {

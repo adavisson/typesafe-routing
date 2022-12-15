@@ -1,16 +1,19 @@
-import { Link, useMatch } from "@tanstack/react-router";
-import React, { ChangeEvent, FC, useEffect, useState } from "react";
-import { z } from "zod";
-import { crazySearchParamsRoute } from "../routes";
+import { Link } from "@tanstack/react-router";
+import { ChangeEvent, useEffect, useState } from "react";
+import {
+  CrazySearchParam,
+  Route as CrazySearchParamsRoute,
+} from "../../routes/crazy-search-params.index.route";
 
-export const CrazySearchParams: FC = () => {
-  const { search, navigate } = useMatch(crazySearchParamIndexRoute.id);
-  const [assignee, setAssignee] = useState<string>(search.assignee ?? "");
-  const [client, setClient] = useState<string>(search.client ?? "");
-  const [types, setTypes] = useState<Array<string>>(search.types ?? []);
-  const [weirdNestedFilter, setWeirdNestedFilter] = useState<
-    typeof search.weirdNestedFilter
-  >(search.weirdNestedFilter ?? undefined);
+export function CrazySearchParams() {
+  const search = CrazySearchParamsRoute.useSearch();
+  const navigate = CrazySearchParamsRoute.useNavigate();
+  const [assignee, setAssignee] = useState(search.assignee ?? "");
+  const [client, setClient] = useState(search.client ?? "");
+  const [types, setTypes] = useState(search.types ?? []);
+  const [weirdNestedFilter, setWeirdNestedFilter] = useState(
+    search.weirdNestedFilter ?? undefined
+  );
 
   const handleTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -22,6 +25,7 @@ export const CrazySearchParams: FC = () => {
 
   const handleClick = () => {
     setWeirdNestedFilter({
+      id: 12,
       name: "levelOne",
       levelOne: { name: "levelTwo", levelTwo: "???" },
     });
@@ -29,31 +33,47 @@ export const CrazySearchParams: FC = () => {
 
   useEffect(() => {
     navigate({
-      search: (old) => ({ ...old, assignee }),
+      to: CrazySearchParamsRoute.fullPath,
+      search: (prev: CrazySearchParam): CrazySearchParam => ({
+        ...prev,
+        assignee,
+      }),
       replace: true,
     });
-  }, [assignee, navigate]);
+  }, [assignee]);
 
   useEffect(() => {
     navigate({
-      search: (old) => ({ ...old, client }),
+      to: CrazySearchParamsRoute.fullPath,
+      search: (prev: CrazySearchParam): CrazySearchParam => ({
+        ...prev,
+        client,
+      }),
       replace: true,
     });
-  }, [client, navigate]);
+  }, [client]);
 
   useEffect(() => {
     navigate({
-      search: (old) => ({ ...old, types }),
+      to: CrazySearchParamsRoute.fullPath,
+      search: (prev: CrazySearchParam): CrazySearchParam => ({
+        ...prev,
+        types,
+      }),
       replace: true,
     });
-  }, [types, navigate]);
+  }, [types]);
 
   useEffect(() => {
     navigate({
-      search: (old) => ({ ...old, weirdNestedFilter }),
+      to: CrazySearchParamsRoute.fullPath,
+      search: (prev: CrazySearchParam): CrazySearchParam => ({
+        ...prev,
+        weirdNestedFilter,
+      }),
       replace: true,
     });
-  }, [weirdNestedFilter, navigate]);
+  }, [weirdNestedFilter]);
 
   return (
     <>
@@ -144,30 +164,9 @@ export const CrazySearchParams: FC = () => {
         {types.map((type, index) => (index !== 0 ? ", " + type : type))}
       </p>
       <p>
-        <strong>wierdNestedFilter (stringified): </strong>
+        <strong>weirdNestedFilter (stringified): </strong>
         {JSON.stringify(weirdNestedFilter)}
       </p>
     </>
   );
-};
-
-export const crazySearchParamIndexRoute = crazySearchParamsRoute.createRoute({
-  path: "/",
-  component: CrazySearchParams,
-  validateSearch: z.object({
-    assignee: z.string().optional(),
-    client: z.string().optional(),
-    types: z.array(z.string()).optional(),
-    weirdNestedFilter: z
-      .object({
-        name: z.string().optional(),
-        levelOne: z
-          .object({
-            name: z.string().optional(),
-            levelTwo: z.string().optional(),
-          })
-          .optional(),
-      })
-      .optional(),
-  }),
-});
+}

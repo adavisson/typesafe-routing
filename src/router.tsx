@@ -1,49 +1,9 @@
-import { createReactRouter } from "@tanstack/react-router";
-import { crazySearchParamIndexRoute } from "./views/CrazySearchParams/CrazySearchParams";
-import { indexRoute } from "./views/Home/Home";
-import {
-  lineItemsRoute,
-  orderDetailIndexRoute,
-  orderDetailRoute,
-} from "./views/OrderDetail/OrderDetail";
-import { lineItemsIndexRoute } from "./views/LineItems/LineItems";
-import { ordersIndexRoute } from "./views/Orders/Orders";
-import { pokemonIndexRoute } from "./views/Pokemon/Pokemon";
-import { pokemonDetailRoute } from "./views/PokemonDetail/PokemonDetail";
-import {
-  crazySearchParamsRoute,
-  layoutRoute,
-  ordersRoute,
-  pokemonRoute,
-} from "./views/routes";
-import { rootRoute } from "./views/routes";
-import {
-  lineItemDetailIndexRoute,
-  lineItemDetailRoute,
-} from "./views/LineItemDetail/LineItemDetail";
+import { createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
 
-const routeConfig = rootRoute.addChildren([
-  layoutRoute.addChildren([
-    indexRoute,
-    ordersRoute.addChildren([
-      ordersIndexRoute,
-      orderDetailRoute.addChildren([
-        orderDetailIndexRoute,
-        lineItemsRoute.addChildren([
-          lineItemsIndexRoute,
-          lineItemDetailRoute.addChildren([lineItemDetailIndexRoute]),
-        ]),
-      ]),
-    ]),
-    pokemonRoute.addChildren([pokemonIndexRoute, pokemonDetailRoute]),
-    crazySearchParamsRoute.addChildren([crazySearchParamIndexRoute]),
-  ]),
-]);
-
-export const router = createReactRouter({
-  routeConfig,
+export const router = createRouter({
+  routeTree,
   defaultPreload: "intent",
-  defaultPreloadMaxAge: 2000,
 });
 
 declare module "@tanstack/react-router" {
