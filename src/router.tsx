@@ -22,7 +22,11 @@ const routeConfig = rootRoute.addChildren([
   ]),
 ]);
 
-export const router = createReactRouter({ routeConfig });
+export const router = createReactRouter({
+  routeConfig,
+  defaultPreload: "intent",
+  defaultPreloadMaxAge: 2000,
+});
 
 declare module "@tanstack/react-router" {
   interface RegisterRouter {

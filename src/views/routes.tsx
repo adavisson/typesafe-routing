@@ -14,7 +14,6 @@ export const pokemonRoute = rootRoute.createRoute({
 export const crazySearchParamsRoute = rootRoute.createRoute({
   path: "crazySearchParams",
 });
-
 export const layoutRoute = rootRoute.createRoute({
   id: "layout",
   component: Breadcrumbs,
