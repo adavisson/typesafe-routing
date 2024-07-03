@@ -11,21 +11,36 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as OrdersRouteImport } from './routes/orders.route'
 import { Route as IndexRouteImport } from './routes/index.route'
+import { Route as ValidatedSearchParamsIndexRouteImport } from './routes/validated-search-params.index.route'
 import { Route as PokemonIndexRouteImport } from './routes/pokemon.index.route'
 import { Route as OrdersIndexRouteImport } from './routes/orders/index.route'
-import { Route as CrazySearchParamsIndexRouteImport } from './routes/crazy-search-params.index.route'
+import { Route as OrdersOrderIdRouteImport } from './routes/orders/$orderId.route'
 import { Route as PokemonPokemonNameIndexRouteImport } from './routes/pokemon.$pokemonName.index.route'
 import { Route as OrdersOrderIdIndexRouteImport } from './routes/orders/$orderId/index.route'
+import { Route as OrdersOrderIdLineItemsImport } from './routes/orders/$orderId/line-items'
 import { Route as OrdersOrderIdLineItemsIndexRouteImport } from './routes/orders/$orderId/line-items/index.route'
+import { Route as OrdersOrderIdLineItemsLineItemIdRouteImport } from './routes/orders/$orderId/line-items/$lineItemId.route'
 import { Route as OrdersOrderIdLineItemsLineItemIdIndexRouteImport } from './routes/orders/$orderId/line-items/$lineItemId/index.route'
 
 // Create/Update Routes
+
+const OrdersRouteRoute = OrdersRouteImport.update({
+  path: '/orders',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRouteRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const ValidatedSearchParamsIndexRouteRoute =
+  ValidatedSearchParamsIndexRouteImport.update({
+    path: '/validated-search-params/',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 const PokemonIndexRouteRoute = PokemonIndexRouteImport.update({
   path: '/pokemon/',
@@ -33,15 +48,14 @@ const PokemonIndexRouteRoute = PokemonIndexRouteImport.update({
 } as any)
 
 const OrdersIndexRouteRoute = OrdersIndexRouteImport.update({
-  path: '/orders/',
-  getParentRoute: () => rootRoute,
+  path: '/',
+  getParentRoute: () => OrdersRouteRoute,
 } as any)
 
-const CrazySearchParamsIndexRouteRoute =
-  CrazySearchParamsIndexRouteImport.update({
-    path: '/crazy-search-params/',
-    getParentRoute: () => rootRoute,
-  } as any)
+const OrdersOrderIdRouteRoute = OrdersOrderIdRouteImport.update({
+  path: '/$orderId',
+  getParentRoute: () => OrdersRouteRoute,
+} as any)
 
 const PokemonPokemonNameIndexRouteRoute =
   PokemonPokemonNameIndexRouteImport.update({
@@ -50,20 +64,31 @@ const PokemonPokemonNameIndexRouteRoute =
   } as any)
 
 const OrdersOrderIdIndexRouteRoute = OrdersOrderIdIndexRouteImport.update({
-  path: '/orders/$orderId/',
-  getParentRoute: () => rootRoute,
+  path: '/',
+  getParentRoute: () => OrdersOrderIdRouteRoute,
+} as any)
+
+const OrdersOrderIdLineItemsRoute = OrdersOrderIdLineItemsImport.update({
+  path: '/line-items',
+  getParentRoute: () => OrdersOrderIdRouteRoute,
 } as any)
 
 const OrdersOrderIdLineItemsIndexRouteRoute =
   OrdersOrderIdLineItemsIndexRouteImport.update({
-    path: '/orders/$orderId/line-items/',
-    getParentRoute: () => rootRoute,
+    path: '/',
+    getParentRoute: () => OrdersOrderIdLineItemsRoute,
+  } as any)
+
+const OrdersOrderIdLineItemsLineItemIdRouteRoute =
+  OrdersOrderIdLineItemsLineItemIdRouteImport.update({
+    path: '/$lineItemId',
+    getParentRoute: () => OrdersOrderIdLineItemsRoute,
   } as any)
 
 const OrdersOrderIdLineItemsLineItemIdIndexRouteRoute =
   OrdersOrderIdLineItemsLineItemIdIndexRouteImport.update({
-    path: '/orders/$orderId/line-items/$lineItemId/',
-    getParentRoute: () => rootRoute,
+    path: '/',
+    getParentRoute: () => OrdersOrderIdLineItemsLineItemIdRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -77,19 +102,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRoute
     }
-    '/crazy-search-params/': {
-      id: '/crazy-search-params/'
-      path: '/crazy-search-params'
-      fullPath: '/crazy-search-params'
-      preLoaderRoute: typeof CrazySearchParamsIndexRouteImport
+    '/orders': {
+      id: '/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof OrdersRouteImport
       parentRoute: typeof rootRoute
+    }
+    '/orders/$orderId': {
+      id: '/orders/$orderId'
+      path: '/$orderId'
+      fullPath: '/orders/$orderId'
+      preLoaderRoute: typeof OrdersOrderIdRouteImport
+      parentRoute: typeof OrdersRouteImport
     }
     '/orders/': {
       id: '/orders/'
-      path: '/orders'
-      fullPath: '/orders'
+      path: '/'
+      fullPath: '/orders/'
       preLoaderRoute: typeof OrdersIndexRouteImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof OrdersRouteImport
     }
     '/pokemon/': {
       id: '/pokemon/'
@@ -98,12 +130,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PokemonIndexRouteImport
       parentRoute: typeof rootRoute
     }
+    '/validated-search-params/': {
+      id: '/validated-search-params/'
+      path: '/validated-search-params'
+      fullPath: '/validated-search-params'
+      preLoaderRoute: typeof ValidatedSearchParamsIndexRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/orders/$orderId/line-items': {
+      id: '/orders/$orderId/line-items'
+      path: '/line-items'
+      fullPath: '/orders/$orderId/line-items'
+      preLoaderRoute: typeof OrdersOrderIdLineItemsImport
+      parentRoute: typeof OrdersOrderIdRouteImport
+    }
     '/orders/$orderId/': {
       id: '/orders/$orderId/'
-      path: '/orders/$orderId'
-      fullPath: '/orders/$orderId'
+      path: '/'
+      fullPath: '/orders/$orderId/'
       preLoaderRoute: typeof OrdersOrderIdIndexRouteImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof OrdersOrderIdRouteImport
     }
     '/pokemon/$pokemonName/': {
       id: '/pokemon/$pokemonName/'
@@ -112,19 +158,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PokemonPokemonNameIndexRouteImport
       parentRoute: typeof rootRoute
     }
+    '/orders/$orderId/line-items/$lineItemId': {
+      id: '/orders/$orderId/line-items/$lineItemId'
+      path: '/$lineItemId'
+      fullPath: '/orders/$orderId/line-items/$lineItemId'
+      preLoaderRoute: typeof OrdersOrderIdLineItemsLineItemIdRouteImport
+      parentRoute: typeof OrdersOrderIdLineItemsImport
+    }
     '/orders/$orderId/line-items/': {
       id: '/orders/$orderId/line-items/'
-      path: '/orders/$orderId/line-items'
-      fullPath: '/orders/$orderId/line-items'
+      path: '/'
+      fullPath: '/orders/$orderId/line-items/'
       preLoaderRoute: typeof OrdersOrderIdLineItemsIndexRouteImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof OrdersOrderIdLineItemsImport
     }
     '/orders/$orderId/line-items/$lineItemId/': {
       id: '/orders/$orderId/line-items/$lineItemId/'
-      path: '/orders/$orderId/line-items/$lineItemId'
-      fullPath: '/orders/$orderId/line-items/$lineItemId'
+      path: '/'
+      fullPath: '/orders/$orderId/line-items/$lineItemId/'
       preLoaderRoute: typeof OrdersOrderIdLineItemsLineItemIdIndexRouteImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof OrdersOrderIdLineItemsLineItemIdRouteImport
     }
   }
 }
@@ -133,13 +186,22 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRouteRoute,
-  CrazySearchParamsIndexRouteRoute,
-  OrdersIndexRouteRoute,
+  OrdersRouteRoute: OrdersRouteRoute.addChildren({
+    OrdersOrderIdRouteRoute: OrdersOrderIdRouteRoute.addChildren({
+      OrdersOrderIdLineItemsRoute: OrdersOrderIdLineItemsRoute.addChildren({
+        OrdersOrderIdLineItemsLineItemIdRouteRoute:
+          OrdersOrderIdLineItemsLineItemIdRouteRoute.addChildren({
+            OrdersOrderIdLineItemsLineItemIdIndexRouteRoute,
+          }),
+        OrdersOrderIdLineItemsIndexRouteRoute,
+      }),
+      OrdersOrderIdIndexRouteRoute,
+    }),
+    OrdersIndexRouteRoute,
+  }),
   PokemonIndexRouteRoute,
-  OrdersOrderIdIndexRouteRoute,
+  ValidatedSearchParamsIndexRouteRoute,
   PokemonPokemonNameIndexRouteRoute,
-  OrdersOrderIdLineItemsIndexRouteRoute,
-  OrdersOrderIdLineItemsLineItemIdIndexRouteRoute,
 })
 
 /* prettier-ignore-end */
@@ -151,38 +213,69 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/crazy-search-params/",
-        "/orders/",
+        "/orders",
         "/pokemon/",
-        "/orders/$orderId/",
-        "/pokemon/$pokemonName/",
-        "/orders/$orderId/line-items/",
-        "/orders/$orderId/line-items/$lineItemId/"
+        "/validated-search-params/",
+        "/pokemon/$pokemonName/"
       ]
     },
     "/": {
       "filePath": "index.route.tsx"
     },
-    "/crazy-search-params/": {
-      "filePath": "crazy-search-params.index.route.tsx"
+    "/orders": {
+      "filePath": "orders.route.tsx",
+      "children": [
+        "/orders/$orderId",
+        "/orders/"
+      ]
+    },
+    "/orders/$orderId": {
+      "filePath": "orders/$orderId.route.tsx",
+      "parent": "/orders",
+      "children": [
+        "/orders/$orderId/line-items",
+        "/orders/$orderId/"
+      ]
     },
     "/orders/": {
-      "filePath": "orders/index.route.tsx"
+      "filePath": "orders/index.route.tsx",
+      "parent": "/orders"
     },
     "/pokemon/": {
       "filePath": "pokemon.index.route.tsx"
     },
+    "/validated-search-params/": {
+      "filePath": "validated-search-params.index.route.tsx"
+    },
+    "/orders/$orderId/line-items": {
+      "filePath": "orders/$orderId/line-items.tsx",
+      "parent": "/orders/$orderId",
+      "children": [
+        "/orders/$orderId/line-items/$lineItemId",
+        "/orders/$orderId/line-items/"
+      ]
+    },
     "/orders/$orderId/": {
-      "filePath": "orders/$orderId/index.route.tsx"
+      "filePath": "orders/$orderId/index.route.tsx",
+      "parent": "/orders/$orderId"
     },
     "/pokemon/$pokemonName/": {
       "filePath": "pokemon.$pokemonName.index.route.tsx"
     },
+    "/orders/$orderId/line-items/$lineItemId": {
+      "filePath": "orders/$orderId/line-items/$lineItemId.route.tsx",
+      "parent": "/orders/$orderId/line-items",
+      "children": [
+        "/orders/$orderId/line-items/$lineItemId/"
+      ]
+    },
     "/orders/$orderId/line-items/": {
-      "filePath": "orders/$orderId/line-items/index.route.tsx"
+      "filePath": "orders/$orderId/line-items/index.route.tsx",
+      "parent": "/orders/$orderId/line-items"
     },
     "/orders/$orderId/line-items/$lineItemId/": {
-      "filePath": "orders/$orderId/line-items/$lineItemId/index.route.tsx"
+      "filePath": "orders/$orderId/line-items/$lineItemId/index.route.tsx",
+      "parent": "/orders/$orderId/line-items/$lineItemId"
     }
   }
 }

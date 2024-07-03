@@ -1,44 +1,41 @@
-import { Outlet, useMatches } from "@tanstack/react-router";
+import { Link, useMatches } from "@tanstack/react-router";
 import { FC, useMemo } from "react";
 
 /**
- * Better wasy of implementing breacrumbs can be found here:
+ * Better way of implementing breadcrumbs can be found here:
  * https://react-location.tanstack.com/guides/breadcrumbs
  */
 export const Breadcrumbs: FC = () => {
   const matches = useMatches();
 
   const crumbs = useMemo(() => {
-    const routesWithCrumbs = matches.filter(
-      (match) => !!match.params.breadcrumb
+    const filteredMatches = matches.filter(
+      (route) => route.pathname.at(-1) !== "/"
     );
-
-    return routesWithCrumbs.map((route, index) => {
-      if (index === routesWithCrumbs.length - 1) {
-        if (index !== 0) {
-          return ` < ${route.pathname.slice(1)}`;
-        } else {
-          return route.pathname.slice(1);
-        }
+    return filteredMatches.map((route, index) => {
+      if (index >= filteredMatches.length - 1) {
+        return (
+          <>
+            {index !== 0 ? " > " : ""}
+            {route.pathname.split("/").at(-1)}
+          </>
+        );
       } else if (index !== 0) {
         return (
           <>
-            {" < "}
-            <route.Link>{route.pathname.slice(1)}</route.Link>
+            {" > "}
+            <Link to={route.pathname}>{route.pathname.split("/").at(-1)}</Link>
           </>
         );
       } else {
-        return <route.Link>{route.pathname.slice(1)}</route.Link>;
+        return (
+          <Link to={route.pathname}>{route.pathname.split("/").at(-1)}</Link>
+        );
       }
     });
   }, [matches]);
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <div style={{ marginBottom: "1.5rem" }}>
-        {crumbs.map((crumb) => crumb)}
-      </div>
-      <Outlet />
-    </div>
+    <div style={{ marginBottom: "1.5rem" }}>{crumbs.map((crumb) => crumb)}</div>
   );
 };

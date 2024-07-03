@@ -1,18 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
-  CrazySearchParam,
-  Route as CrazySearchParamsRoute,
-} from "../../routes/crazy-search-params.index.route";
+  ValidatedSearchParam,
+  Route as ValidatedSearchParamsRoute,
+} from "../../routes/validated-search-params.index.route";
 
-export function CrazySearchParams() {
-  const search = CrazySearchParamsRoute.useSearch();
-  const navigate = CrazySearchParamsRoute.useNavigate();
+export function ValidatedSearchParams() {
+  const search = ValidatedSearchParamsRoute.useSearch();
+  const navigate = ValidatedSearchParamsRoute.useNavigate();
   const [assignee, setAssignee] = useState(search.assignee ?? "");
   const [client, setClient] = useState(search.client ?? "");
   const [types, setTypes] = useState(search.types ?? []);
-  const [weirdNestedFilter, setWeirdNestedFilter] = useState(
-    search.weirdNestedFilter ?? undefined
+  const [nestedFilter, setNestedFilter] = useState(
+    search.nestedFilter ?? undefined
   );
 
   const handleTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,8 +24,8 @@ export function CrazySearchParams() {
   };
 
   const handleClick = () => {
-    setWeirdNestedFilter({
-      id: 12,
+    setNestedFilter({
+      id: 5,
       name: "levelOne",
       levelOne: { name: "levelTwo", levelTwo: "???" },
     });
@@ -33,8 +33,8 @@ export function CrazySearchParams() {
 
   useEffect(() => {
     navigate({
-      to: CrazySearchParamsRoute.fullPath,
-      search: (prev: CrazySearchParam): CrazySearchParam => ({
+      to: ValidatedSearchParamsRoute.fullPath,
+      search: (prev: ValidatedSearchParam): ValidatedSearchParam => ({
         ...prev,
         assignee,
       }),
@@ -44,8 +44,8 @@ export function CrazySearchParams() {
 
   useEffect(() => {
     navigate({
-      to: CrazySearchParamsRoute.fullPath,
-      search: (prev: CrazySearchParam): CrazySearchParam => ({
+      to: ValidatedSearchParamsRoute.fullPath,
+      search: (prev: ValidatedSearchParam): ValidatedSearchParam => ({
         ...prev,
         client,
       }),
@@ -55,8 +55,8 @@ export function CrazySearchParams() {
 
   useEffect(() => {
     navigate({
-      to: CrazySearchParamsRoute.fullPath,
-      search: (prev: CrazySearchParam): CrazySearchParam => ({
+      to: ValidatedSearchParamsRoute.fullPath,
+      search: (prev: ValidatedSearchParam): ValidatedSearchParam => ({
         ...prev,
         types,
       }),
@@ -66,21 +66,21 @@ export function CrazySearchParams() {
 
   useEffect(() => {
     navigate({
-      to: CrazySearchParamsRoute.fullPath,
-      search: (prev: CrazySearchParam): CrazySearchParam => ({
+      to: ValidatedSearchParamsRoute.fullPath,
+      search: (prev: ValidatedSearchParam): ValidatedSearchParam => ({
         ...prev,
-        weirdNestedFilter,
+        nestedFilter,
       }),
       replace: true,
     });
-  }, [weirdNestedFilter]);
+  }, [nestedFilter]);
 
   return (
     <>
       <Link to="/">
         <h5>Back Home</h5>
       </Link>
-      <h1>Objects in Search Params</h1>
+      <h1>Validated Search Params</h1>
       <div>
         <label>Assignee: </label>
         <select
@@ -143,10 +143,10 @@ export function CrazySearchParams() {
         <label htmlFor="shiny">Shiny</label>
       </div>
       <div>
-        {!weirdNestedFilter ? (
+        {!nestedFilter ? (
           <button onClick={handleClick}>Fill Weird Filter With Stuff</button>
         ) : (
-          <button onClick={() => setWeirdNestedFilter(undefined)}>
+          <button onClick={() => setNestedFilter(undefined)}>
             Clear Filter
           </button>
         )}
@@ -164,8 +164,8 @@ export function CrazySearchParams() {
         {types.map((type, index) => (index !== 0 ? ", " + type : type))}
       </p>
       <p>
-        <strong>weirdNestedFilter (stringified): </strong>
-        {JSON.stringify(weirdNestedFilter)}
+        <strong>nestedFilter (stringified): </strong>
+        {JSON.stringify(nestedFilter)}
       </p>
     </>
   );
