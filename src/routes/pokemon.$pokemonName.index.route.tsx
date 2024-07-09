@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { Pokemon } from "../types/Pokemon";
 import { PokemonDetail } from "../views/PokemonDetail/PokemonDetail";
 
-const fetchPokemon = async (name: string) => {
+const fetchPokemon = async (name: string): Promise<Pokemon> => {
   const pokemonResponse = await fetch(
     `https://pokeapi.co/api/v2/pokemon/${name}`
   );

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import _ from "lodash";
+import { startCase } from "lodash";
 import { FC } from "react";
 import { Route as PokemonDetailRoute } from "../../routes/pokemon.$pokemonName.index.route";
 
@@ -11,7 +11,7 @@ export const PokemonDetail: FC = () => {
       <Link to="/pokemon">
         <h5>Back to Pokemon</h5>
       </Link>
-      <h1>{_.startCase(pokemon.name)}</h1>
+      <h1>{startCase(pokemon.name)}</h1>
       {pokemon.sprites.front_default && (
         <img
           src={pokemon.sprites.front_default}
